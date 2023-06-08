@@ -2,14 +2,37 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:BehaviorsMAUI.Behaviors"
-             x:Class="BehaviorsMAUI.MainPage">
+             x:Class="BehaviorsMAUI.MainPage"
+             x:Name="page">
 
-    <HorizontalStackLayout Spacing="25" Padding="30,0" VerticalOptions="Center">
-        <Button x:Name="counterButton" FontSize="30" HeightRequest="300" WidthRequest="300" Clicked="CounterButton_Clicked">
-            <Button.Behaviors>
-                <local:ButtonWithCounter x:Name="counterButtonBehavior" Counter="5"/>
-            </Button.Behaviors>
-        </Button>
-    </HorizontalStackLayout>
+    <ContentPage.Behaviors>
+        <!-- Visual object is ContentPage, because BackgroundChangingButton was attached to it -->
+        <local:BackgroundChangingButton Color="BlueViolet"
+                                        Button="{ Binding Source={ x:Reference backgroundChangingButton } }"/>
+        <local:BackgroundChangingButton Color="NavajoWhite"
+                                        Button="{ Binding Source={ x:Reference backgroundAndTitleChangingButton } }"
+                                        Command="{ Binding Source={x:Reference page }, Path=ChangeTitle }"
+                                        CommandParameter="Title changed by command from the behavior"/>
+    </ContentPage.Behaviors>
+
+    <ScrollView Orientation="Horizontal" HeightRequest="500" Margin="10">
+        <HorizontalStackLayout Spacing="25" Padding="30,0" VerticalOptions="Center">
+            <Button x:Name="counterButton" FontSize="30" HeightRequest="300" WidthRequest="300" Clicked="CounterButton_Clicked">
+                <Button.Behaviors>
+                    <local:ButtonWithCounter x:Name="counterButtonBehavior" Counter="5"/>
+                </Button.Behaviors>
+            </Button>
+
+            <Button x:Name="backgroundChangingButton"
+                HeightRequest="300"
+                FontSize="50"
+                Text="{ OnIdiom Default='Change background', Phone='Background' }"/>
+
+            <Button x:Name="backgroundAndTitleChangingButton"
+                HeightRequest="300"
+                FontSize="50"
+                Text="{ OnIdiom Default='Change background', Phone='Background' }"/>
+        </HorizontalStackLayout>
+    </ScrollView>
 
 </ContentPage>
